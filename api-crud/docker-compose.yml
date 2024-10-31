@@ -1,0 +1,22 @@
+services:
+  flask-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    networks:
+      - zap-network
+
+  zap:
+    image: zaproxy/zap-stable
+    command: >
+      zap-api-scan.py -t http://flask-app:5000/apidocs/ -f openapi -r report.html
+    volumes:
+      - .:/zap/wrk/:rw
+    networks:
+      - zap-network
+
+networks:
+  zap-network:
+    driver: bridge

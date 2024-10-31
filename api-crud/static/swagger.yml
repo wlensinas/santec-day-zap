@@ -1,0 +1,90 @@
+openapi: 3.0.2
+info:
+  title: Flask API
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/
+    description: localhost
+paths:
+  /items:
+    post:
+      summary: Create a new item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - data
+              properties:
+                id:
+                  type: string
+                data:
+                  type: string
+      responses:
+        '201':
+          description: Item created
+        '400':
+          description: Item already exists
+  /items/{item_id}:
+    get:
+      summary: Get an item by ID
+      parameters:
+        - in: path
+          name: item_id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Item found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  data:
+                    type: string
+        '404':
+          description: Item not found
+    put:
+      summary: Update an item by ID
+      parameters:
+        - in: path
+          name: item_id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  type: string
+      responses:
+        '200':
+          description: Item updated
+        '404':
+          description: Item not found
+    delete:
+      summary: Delete an item by ID
+      parameters:
+        - in: path
+          name: item_id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Item deleted
+        '404':
+          description: Item not found
